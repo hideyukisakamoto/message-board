@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: [:edit, :update]
+  before_action :set_message, only: [:edit, :update ,:destroy]
   
   def index
     # Messageを全て取得する。
@@ -23,16 +23,21 @@ class MessagesController < ApplicationController
   def edit
   end
   
-    def update
-      if @message.update(message_params)
-        # 保存に成功した場合はトップページへリダイレクト
-        redirect_to root_path , notice: 'メッセージを編集しました'
-      else
+  def update
+    if @message.update(message_params)
+      # 保存に成功した場合はトップページへリダイレクト
+      redirect_to root_path , notice: 'メッセージを編集しました'
+    else
         # 保存に失敗した場合は編集画面へ戻す
-        render 'edit'
-      end
-    end # <- こちらのインデントがおかしいことに違和感を覚え、発見しました
-   # <- createアクションのendがここに来てしまっています
+      render 'edit'
+    end
+  end # <- こちらのインデントがおかしいことに違和感を覚え、発見しました
+  # <- createアクションのendがここに来てしまっています
+ 
+ def destroy
+    @message.destroy
+    redirect_to root_path, notice: 'メッセージを削除しました'
+  end
 
   private
   def message_params
